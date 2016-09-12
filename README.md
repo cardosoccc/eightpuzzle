@@ -5,9 +5,11 @@
 Alunos:
 - Caio Cargnin Cardoso
 - Diego Marzarotto
+
 ---
 
 ## Implementação
+
 ---
 
 
@@ -130,6 +132,8 @@ def h2(self):
 
     return custo_estimado
 
+def distancia_manhattan(self, pos1, pos2):
+        return np.sum(np.abs(pos1 - pos2))
 ```
 
 
@@ -225,6 +229,7 @@ da busca, com o caminho completo, ou apenas o resumo.
 ---
 
 ## Exemplos
+
 ---
 
 **Um exemplo mínimo, utilizando a heurística h2, com dois passos de distância em relação ao objetivo:**
@@ -331,6 +336,7 @@ Interface().mostrar_solucao(busca, nodo_final, resumido=True)
 
 
 ## Limitações
+
 ---
 
 O exemplo com maior número de passos que conseguimos resolver foi  
