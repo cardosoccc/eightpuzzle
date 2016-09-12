@@ -1,6 +1,5 @@
 
 # Relatório - Busca Heurística (8-puzzle)
----
 
 Alunos:
 - Caio Cargnin Cardoso
@@ -9,8 +8,6 @@ Alunos:
 ---
 
 ## Implementação
-
----
 
 
 ```python
@@ -230,8 +227,6 @@ da busca, com o caminho completo, ou apenas o resumo.
 
 ## Exemplos
 
----
-
 **Um exemplo mínimo, utilizando a heurística h2, com dois passos de distância em relação ao objetivo:**
 
 ---
@@ -336,8 +331,6 @@ Interface().mostrar_solucao(busca, nodo_final, resumido=True)
 
 
 ## Limitações
-
----
 
 O exemplo com maior número de passos que conseguimos resolver foi  
 com um estado distante 27 passos da solução, utilizando a heurística h2.  
