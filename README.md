@@ -18,7 +18,18 @@ from eightpuzzle import Nodo, BuscaHeuristica8Puzzle, Interface
 O programa consiste de um script python, que utiliza 3 classes ao  
 realizar a busca A* para encontrar a solução do jogo 8-puzzle.
 
-Para utilizar o script, ele deve ser executado em um terminal.  
+Além das bibliotecas nativas do python, o script usa também o *numpy*,  
+portanto, antes de rodar o script é necessário instalar a biblioteca.  
+Caso esteja usado o *pip* para gerenciar as dependências, basta rodar:
+
+`sudo pip install -r requirements.txt`
+
+Caso contrário, instale o pip antes. No Ubuntu basta executar:
+
+`sudo apt-get install python-pip`
+
+Para instruções em outros sistemas operacionais, consulte o google. :)  
+Para utilizar o script, ele deve ser executado em um terminal. 
 
 `./eightpuzzle.py`
 
@@ -26,9 +37,8 @@ Ao ser executado, o script apresenta a seguinte saída para o usuário,
 que deve então entrar com um estado válido do tabuleiro.  
 Em seguida é mostrado o caminho até a solução:
 
-
 ```python
-Interface().iniciar('h2', loop=False)
+Interface().iniciar('h2', loop=False) # internamente o script executa isso, com loop=True
 ```
 
     
