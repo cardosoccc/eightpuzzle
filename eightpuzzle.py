@@ -4,8 +4,8 @@
 import re
 import sys
 import heapq
-import numpy as np
 import argparse
+import numpy as np
 
 class Nodo(object):
     """Responsável por representar um estado do tabuleiro.
@@ -268,3 +268,4 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print "\nSaindo..."
         sys.exit(0)
+
