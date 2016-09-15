@@ -1,19 +1,13 @@
-
 # Relatório - Busca Heurística (8-puzzle)
 
 Alunos:
+
 - Caio Cargnin Cardoso
 - Diego Marzarotto
 
 ---
 
 ## Implementação
-
-
-```python
-import numpy as np
-from eightpuzzle import Nodo, BuscaHeuristica8Puzzle, Interface
-```
 
 O programa consiste de um script python, que utiliza 3 classes ao  
 realizar a busca A* para encontrar a solução do jogo 8-puzzle.
@@ -44,10 +38,11 @@ Ao ser executado, o script apresenta a seguinte saída para o usuário:
     Ex: 1 2 3 4 5 6 7 8 X = equivalente a |1 2 3|
                                           |4 5 6|
                                           |7 8 X|
-    
-    
-O usuário deve então deve então entrar com um estado válido do tabuleiro:
 
+    >
+    
+Que deve então entrar com um estado válido do tabuleiro:
+    
     > 1 2 3 4 5 6 7 X 8
     
 Em seguida é mostrado o caminho até a solução:
@@ -66,7 +61,6 @@ Em seguida é mostrado o caminho até a solução:
     ## Número de passos: 1
     ## Heurística utilizada: h2
 
-
 ---
 
 Podem ser passadas as diferentes heurísticas implementadas como  parâmetros para o script.
@@ -77,11 +71,13 @@ Podem ser passadas as diferentes heurísticas implementadas como  parâmetros pa
 
 ---
 
-A seguir, uma breve descrição das classes existentes,  
-e o código de seus principais métodos:  
+A seguir, uma breve descrição das classes existentes,
+a assinatura e documentação dos principais métodos:  
+
+---
 
 ### Classe Nodo
----
+
 
 Responsável por representar um estado do tabuleiro.
 
@@ -91,8 +87,8 @@ O cálculo do custo e das heurísticas também é responsabilidade do Nodo.
 
 O cálculo do custo é representado através da função f:
 
-- **f**: número de movimentos anteriores até se atingir o estado atual;
-
+- **f**: número de movimentos anteriores até se atingir o estado atual;  
+  
 Três heurísticas distintas podem ser utilizadas:
 
 - **h1**: número de peças fora do lugar;
@@ -107,46 +103,32 @@ Três heurísticas distintas podem ser utilizadas:
 ```python
 def f(self):
     '''Cálculo do custo, baseado na quantidade movimentos até se atingir o estado atual.'''
-    custo = 0
-    nodo = self
-    while nodo.antecessor:
-        custo += 1
-        nodo = nodo.antecessor
-
-    return custo
+    ...
 ```
-
+  
 
 ```python
 def h1(self):
     '''Heurística baseada no número de peças fora do lugar.'''
-    return np.sum(self.estado != self.SOLUCAO)
+    ...
 ```
 
 
 ```python
 def h2(self):
     '''Heurística baseada na distância manhattan de cada peça'''
-    custo_estimado = 0
-    for i in xrange(8):
-        pos_ideal = np.array(divmod(i,3))
-        pos_atual = self.posicao(i+1, self.estado)
-        custo_estimado += self.distancia_manhattan(pos_ideal, pos_atual)
-
-    return custo_estimado
-
-def distancia_manhattan(self, pos1, pos2):
-        return np.sum(np.abs(pos1 - pos2))
+    ...
 ```
 
 
 ```python
 def h3(self):
     '''Heurística baseada na média simples entre h1 e h2.'''
-    return ( self.h1() + self.h2() ) / 2.0
+    ...
 ```
 
 ### Classe BuscaHeuristica8Puzzle
+
 ---
 
 Responsável por realizar a busca A* da solução para o jogo 8-puzzle.
@@ -159,9 +141,14 @@ em relação ao estado final do jogo.
 *Referência: Russel; Norvig, 2010*
 
 ---
+  
 
 
 ```python
+
+
+  
+
 def buscar(self, estado_atual):
     '''Método responsável pela busca propriamente dita.
 
@@ -179,44 +166,25 @@ def buscar(self, estado_atual):
     na qual a chave é uma função hash baseada apenas no estado de cada Nodo.
 
     '''
-    assert type(estado_atual) == np.ndarray, 'O estado deve ser representado por uma matriz numpy'
-    assert estado_atual.shape == (3,3), 'A matriz de estados deve ser uma matriz 3x3'
-
-    self.fronteira = list()
-    self.dict_fronteira = dict()
-    self.visitados = set()
-    self.max_fronteira = 1
-
-    nodo_atual = Nodo(estado_atual, antecessor=None, heuristica=self.heuristica)
-    self.visitados.add(nodo_atual)
-
-    while not nodo_atual.objetivo():
-
-        for nodo in nodo_atual.sucessores():
-            nodo_na_fronteira = self.dict_fronteira.get(hash(nodo))
-            if not nodo_na_fronteira and (not nodo in self.visitados):
-                heapq.heappush(self.fronteira, nodo)
-                self.dict_fronteira[hash(nodo)] = nodo
-            elif nodo_na_fronteira and nodo_na_fronteira.custo > nodo.custo:
-                self.fronteira.remove(nodo_na_fronteira)
-                heapq.heappush(self.fronteira, nodo)
-                self.dict_fronteira[hash(nodo)] = nodo
-
-        if len(self.fronteira) > self.max_fronteira:
-            self.max_fronteira = len(self.fronteira)
-
-        if len(self.fronteira) > 0:
-            nodo_atual = heapq.heappop(self.fronteira)
-            del self.dict_fronteira[hash(nodo_atual)]
-            self.visitados.add(nodo_atual)
-        else:
-            return null
-
-    return nodo_atual
+    ...
 ```
 
-### Classe Interface
+```python
+
+def existe_solucao(self, estado_atual):
+    '''Método responsável por verificar se existe solução para um estado.
+
+    A verificação implementada foi com base no número de inversões do tabuleiro.
+    Inversões são ocorrências de um número maior aparecendo antes de outro número menor.
+    Caso o número de inversões no tabuleiro seja ímpar, não existe solução possível.
+    '''
+    ...
+```
+
 ---
+
+### Classe Interface
+
 
 Responsável por interagir com o usuário e apresentar o resultado da busca.
 
@@ -224,10 +192,6 @@ Além de mostrar o caminho percorrido até a solução,
 apresenta também o número de passos,  
 o tamanho máximo da fronteira durante a busca  
 e o número de nodos visitados até a solução.  
-
-Os detalhes de implementação serão omitidos neste relatório,  
-mas basta dizer que é possível apresentar o resultado completo  
-da busca, com o caminho completo, ou apenas o resumo.
 
 ---
 
@@ -237,18 +201,6 @@ da busca, com o caminho completo, ou apenas o resumo.
 
 ---
 
-
-```python
-busca = BuscaHeuristica8Puzzle(heuristica='h2')
-nodo_final = busca.buscar(np.array([
-    [1    , 2    , 3    ],
-    [4    , 5    , 6    ],
-    [None , 7    , 8    ]
-]))
-Interface().mostrar_solucao(busca, nodo_final)
-```
-
-    
     
     |1 2 3|
     |4 5 6|
@@ -286,15 +238,11 @@ nodo_final = busca.buscar(np.array([
 ]))
 Interface().mostrar_solucao(busca, nodo_final, resumido=True)
 ```
-
-    
-    
     
     ## Número de nodos visitados: 165
     ## Maior quantidade de nodos na fronteira: 105
     ## Número de passos: 13
     ## Heurística utilizada: h1
-
 
 
 ```python
@@ -306,9 +254,6 @@ nodo_final = busca.buscar(np.array([
 ]))
 Interface().mostrar_solucao(busca, nodo_final, resumido=True)
 ```
-
-    
-    
     
     ## Número de nodos visitados: 81
     ## Maior quantidade de nodos na fronteira: 56
@@ -316,8 +261,9 @@ Interface().mostrar_solucao(busca, nodo_final, resumido=True)
     ## Heurística utilizada: h2
 
 
-
 ```python
+
+
 busca = BuscaHeuristica8Puzzle(heuristica='h3')
 nodo_final = busca.buscar(np.array([
     [1    , 2    , 3    ],
@@ -326,9 +272,6 @@ nodo_final = busca.buscar(np.array([
 ]))
 Interface().mostrar_solucao(busca, nodo_final, resumido=True)
 ```
-
-    
-    
     
     ## Número de nodos visitados: 102
     ## Maior quantidade de nodos na fronteira: 64
@@ -336,28 +279,22 @@ Interface().mostrar_solucao(busca, nodo_final, resumido=True)
     ## Heurística utilizada: h3
 
 
-## Limitações
+## Problemas / Limitações
+
+Como sugerido na apresentação junto ao professor, foi implementada
+posteriormente uma verificação de estados do tabuleiro
+que não são possíveis de serem resolvidos.
+
+A verificação implementada foi com base no número de inversões do tabuleiro.
+Inversões são ocorrências de um número maior aparecendo antes
+de outro número menor.
+Caso o número de inversões no tabuleiro seja ímpar, não existe solução possível.
 
 O exemplo com maior número de passos que conseguimos resolver foi  
-com um estado distante 27 passos da solução, utilizando a heurística h2.  
-Para estados mais distantes, o algoritmo não concluiu a busca em um tempo hábil.
-
+com um estado distante 2 passos da solução, utilizando a heurística h2.  
 As outras heurísticas não conseguiram executar uma busca com tantos passos.
 
 ---
-
-
-```python
-busca = BuscaHeuristica8Puzzle(heuristica='h2')
-nodo_final = busca.buscar(np.array([
-    [7    , 5    , 8    ],
-    [2    , 3    , 4    ],
-    [1    , None , 6    ]
-]))
-Interface().mostrar_solucao(busca, nodo_final)
-```
-
-    
     
     |7 5 8|
     |2 3 4|
