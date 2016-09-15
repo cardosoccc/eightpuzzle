@@ -137,6 +137,21 @@ class BuscaHeuristica8Puzzle(object):
     def __init__(self, heuristica='h2'):
         self.heuristica = heuristica
 
+    def existe_solucao(self, estado):
+        '''Método responsável por verificar se existe solução para um estado.
+
+        A verificação implementada foi com base no número de inversões do tabuleiro.
+        Inversões são ocorrências de um número maior aparecendo antes de outro número menor.
+        Caso o número de inversões no tabuleiro seja ímpar, não existe solução possível.
+        '''
+        inversoes = 0
+        for i, el1 in enumerate(estado[:-1]):
+            for j, el2 in enumerate(estado[i+1:]):
+                if el1 and el2 and el1 > el2:
+                    inversoes += 1
+
+        return inversoes % 2 == 0
+
     def num_visitados(self):
         return len(self.visitados)
 
@@ -160,6 +175,9 @@ class BuscaHeuristica8Puzzle(object):
         assert type(estado_atual) == np.ndarray, 'O estado deve ser representado por uma matriz numpy'
         assert estado_atual.shape == (3,3), 'A matriz de estados deve ser uma matriz 3x3'
 
+        if not self.existe_solucao(estado_atual.flatten()):
+            raise Exception("Não existe solução possível para este estado.")
+
         self.fronteira = list()
         self.dict_fronteira = dict()
         self.visitados = set()
@@ -169,7 +187,6 @@ class BuscaHeuristica8Puzzle(object):
         self.visitados.add(nodo_atual)
 
         while not nodo_atual.objetivo():
-
             for nodo in nodo_atual.sucessores():
                 nodo_na_fronteira = self.dict_fronteira.get(hash(nodo))
                 if not nodo_na_fronteira and (not nodo in self.visitados):
@@ -254,7 +271,8 @@ class Interface(object):
 
                 raw_input("\nPressione enter para continuar...")
             except Exception as e:
-                print '\nEstado inválido, tente novamente'
+                print '\nEstado inválido, tente novamente\n'
+                print e
                 raw_input("\nPressione enter para continuar...")
                 continue
 
